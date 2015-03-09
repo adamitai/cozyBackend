@@ -1,4 +1,5 @@
 from Contact import Contact
+from Notification import Notification
 class Agent(object):
   def __init__(self):
     # agent private details
@@ -6,6 +7,7 @@ class Agent(object):
     # agent system details
     self.agent_id = ""
     self.active = ""
+    self.level = ""
 
   def get_rank(self):
     # Get the rank calculation
@@ -42,10 +44,28 @@ class Agent(object):
   def create_static_agent(self):
     print "Creating static agent"
     self.agent_id = 0
-    self.active = True
+    self.active = "Active"
+    self.rank = "8.9(374)"
+    self.level = 3
+    self.balance = "$7300"
+    self.apartments_in_process = 4
+    self.notifications = []
+    static_notification = Notification()
+    static_notification.create_static()
+    self.notifications.append(static_notification)
     static_contact = Contact()
     static_contact.create_static_contact()
-    self.contact = static_contact.get_json()
+    self.contact = static_contact
+
+  def update_data(self):
+    for notification in self.notifications:
+      notification.update_data()
 
   def get_json(self):
-    return self.__dict__
+    val = self.__dict__.copy()
+    json_notifications = []
+    for notification in self.notifications:
+      json_notifications.append(notification.get_json())
+    val["notifications"] = json_notifications
+    val["contact"] = self.contact.get_json()
+    return val

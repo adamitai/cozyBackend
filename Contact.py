@@ -17,7 +17,9 @@ class Contact(object):
     self.image = "http://www.google.com"
     static_address = Address()
     static_address.create_static_address()
-    self.address = static_address.get_json()
+    self.address = static_address
 
   def get_json(self):
-    return self.__dict__
+    val = self.__dict__.copy()
+    val["address"] = self.address.get_json()
+    return val
