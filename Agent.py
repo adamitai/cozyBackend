@@ -1,6 +1,7 @@
 from Contact import Contact
 from Notification import Notification
 class Agent(object):
+
   def __init__(self):
     # agent private details
     self.contact = Contact()
@@ -46,8 +47,8 @@ class Agent(object):
     self.agent_id = 0
     self.active = "Active"
     self.rank = "8.9(374)"
-    self.level = 3
-    self.balance = "$7300"
+    self.level = 4
+    self.balance = "$7303"
     self.apartments_in_process = 4
     self.notifications = []
     static_notification = Notification()
@@ -69,3 +70,5 @@ class Agent(object):
     val["notifications"] = json_notifications
     val["contact"] = self.contact.get_json()
     return val
+
+

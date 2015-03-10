@@ -1,29 +1,32 @@
-import os
 from tornado import ioloop,web
-from pymongo import MongoClient
 import json
 from bson import json_util
-from bson.objectid import ObjectId
 from Agent import Agent
 import Static
+import DbAgents
 
+agents = None
 
 class AgentHandler(web.RequestHandler):
 
     def init_agents(self):
-      self.static = True
+      global agents
+      self.static = False
       if Static.Agents == None:
         if self.static:
           self.create_static_agents()
-        else:
-          #agents = get_from_db()
-          pass
+        elif agents == None:
+          agents = DbAgents.DbAgents()
+
 
     def get(self):
+      global agents
       self.init_agents()
-      self.update_agents()
+      #self.update_agents()
       self.set_header("Content-Type", "application/json")
-      self.write(json.dumps(list(self.get_json()),default=json_util.default))
+      self.write(json.dumps(list(agents.get_agents()),default=json_util.default))
+
+      #self.write(json.dumps(list(self.get_json()),default=json_util.default))
 
 
     def post(self):
